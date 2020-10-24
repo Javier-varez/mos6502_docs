@@ -1,0 +1,6 @@
+[book]
+authors = ["Javier Alvarez"]
+language = "en"
+multilingual = false
+src = "src"
+title = "6502 Emulator Guide"
