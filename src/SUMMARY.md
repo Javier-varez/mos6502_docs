@@ -1,5 +1,7 @@
 # Summary
 
+- [Introduction](./README.md)
+
 # 6502 Processor Architecture
 
 - [Architecture](./processor_architecture/architecture.md)
