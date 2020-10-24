@@ -2,54 +2,16 @@
 
 Available addressing modes are listed below.
 
-## Accumulator
-
-The argument is provided automatically from the accumulator.
-
-## Absolute
-
-The argument is provided at the given absolute address.
-
-## Absolute, X-Indexed
-
-The argument is provided at the given address + the X index value.
-
-## Absolute, Y-Indexed
-
-The argument is provided at the given address + the Y index value.
-
-## Immediate
-
-The argument is an immediate value provided as part of the instruction. Single byte.
-
-## Implied
-
-The operand is already implied by the opcode itself (not specified externally).
-
-## Indirect
-
-The operand is located at the address located at the address provided in the instruction (2 dereferences).
-
-## X-indexed, indirect
-
-Zeropage absolute address indexed by the X index value. Effective address is (00LL + X)
-
-## Indirect, Y-indexed
-
-Zeropage absolute address. Dereferenced and added to the value of the Y index. Effective address is (00LL) + Y
-
-## Relative
-
-PC + signed offset (used for branching)
-
-## Zeropage
-
-Operand is a zeropage address. Argument is 00LL.
-
-## Zeropage X-indexed
-
-Operand is a zeropage address incremented by X. Argument is 00LL + X.
-
-## Zeropage Y-indexed
-
-Operand is a zeropage address incremented by Y. Argument is 00LL + Y.
+* **Accumulator**. The operand is the Accumulator.
+* **Absolute**. The operand is located at a given absolute address (16-bit addressing-space).
+* **Absolute, X-Indexed**. The operand is located at the absolute address + the X index value.
+* **Absolute, Y-Indexed**. The operand is located at the absolute address + the Y index value.
+* **Immediate**. The operand is encoded with the instruction.
+* **Implied**. The operand is implicit in the context of the instruction (not provided by the user).
+* **Indirect**. The address field in the instruction contains the memory location where the effective address of the operand is present.
+* **X-indexed, indirect**. The value at the address field in the instruction plus the X register points to the memory location where the effective address of the operand is present.
+* **Indirect, Y-indexed**. The operand is the same as in an indirect access, except the obtained value is added with the Y register.
+* **Relative**. The operand is the PC + a signed offset (used for branching).
+* **Zeropage**. The operand is a zeropage address (single byte).
+* **Zeropage X-indexed**. The operand is a zeropage address incremented by X.
+* **Zeropage Y-indexed**. The operand is a zeropage address incremented by Y.
