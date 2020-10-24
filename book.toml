@@ -4,3 +4,6 @@ language = "en"
 multilingual = false
 src = "src"
 title = "6502 Emulator Guide"
+
+[output.html]
+site-url = "mos6502_docs"
