@@ -1,0 +1,458 @@
+<!DOCTYPE HTML>
+<html lang="en" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>6502 Emulator Guide</title>
+        
+        <meta name="robots" content="noindex" />
+        
+        
+
+
+        <!-- Custom HTML head -->
+        
+
+
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        
+        <link rel="icon" href="favicon.svg">
+        
+        
+        <link rel="shortcut icon" href="favicon.png">
+        
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        
+        <link rel="stylesheet" href="css/print.css" media="print">
+        
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        
+        <link rel="stylesheet" href="fonts/fonts.css">
+        
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        
+
+        
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script type="text/javascript">
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script type="text/javascript">
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script type="text/javascript">
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script type="text/javascript">
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded "><a href="index.html"><strong aria-hidden="true">1.</strong> Introduction</a></li><li class="chapter-item expanded affix "><li class="part-title">6502 Processor Architecture</li><li class="chapter-item expanded "><a href="processor_architecture/architecture.html"><strong aria-hidden="true">2.</strong> Architecture</a></li><li class="chapter-item expanded "><a href="processor_architecture/isa.html"><strong aria-hidden="true">3.</strong> Instruction Set Architecture</a></li><li class="chapter-item expanded "><a href="processor_architecture/addressing_modes.html"><strong aria-hidden="true">4.</strong> Addressing Modes</a></li><li class="chapter-item expanded "><a href="processor_architecture/microarchitecture.html"><strong aria-hidden="true">5.</strong> Microarchitecture</a></li><li class="chapter-item expanded "><a href="processor_architecture/processor_status.html"><strong aria-hidden="true">6.</strong> Processor Status</a></li><li class="chapter-item expanded affix "><li class="part-title">6502 Emulator</li><li class="chapter-item expanded "><a href="emulator/intro.html"><strong aria-hidden="true">7.</strong> Emulator architecture</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light (default)</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                        
+                    </div>
+
+                    <h1 class="menu-title">6502 Emulator Guide</h1>
+
+                    <div class="right-buttons">
+                        
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        
+                        
+                    </div>
+                </div>
+
+                
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" name="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+                
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script type="text/javascript">
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1><a class="header" href="#introduction" id="introduction">Introduction</a></h1>
+<h1><a class="header" href="#architecture" id="architecture">Architecture</a></h1>
+<p>The 6502 processor is an 8-bit processor developed by MOS Technology in 1975. It is a von neumann computer with a single 8-bit data bus and an address bus of 16-bits. The 16-bit address space of the processor allows it to address up to 64kB of effective memory.</p>
+<p>This</p>
+<h1><a class="header" href="#instruction-set-architecture" id="instruction-set-architecture">Instruction Set Architecture</a></h1>
+<p>The original NMOS version of the 6502 has 151 legal opcodes.
+Out of the total number of possible opcodes, ilegal opcodes have been found to be sometimes useful.</p>
+<p>The ISA included in this page will cover the legal opcodes. Ilegal opcodes may be added in the future as an extension to this page.</p>
+<p>The instructions can be categorized according to the type of operation they perform. We can distinguish between the following categories:</p>
+<ul>
+<li><strong>Logical and bit manipulation operations</strong>. Operations such as AND, OR, XOR, etc.</li>
+<li><strong>Arithmetic operations</strong>. Operations such as ADD, SUBSTRACT, INCREMENT, etc.</li>
+<li><strong>Data shifting instructions</strong>. Shift values in registers. Can be either logical, arithmetic or rotation instructions.</li>
+<li><strong>Program control flow operations</strong>. Control the flow of the program. They allow to set/modify the value of the program counter.</li>
+<li><strong>Memory transfer operations</strong>. Transfers memory between different parts of the system (Mainly processor and main memory).</li>
+</ul>
+<h2><a class="header" href="#logical-and-bit-manipulation-operations" id="logical-and-bit-manipulation-operations">Logical and bit manipulation operations</a></h2>
+<h3><a class="header" href="#logical-operations" id="logical-operations">Logical operations</a></h3>
+<table><thead><tr><th>Mnemonic</th><th>Opcode</th><th>Addressing mode</th><th>Modified Flags</th><th>Description</th></tr></thead><tbody>
+<tr><td><strong>AND</strong></td><td><code>29'h</code></td><td>Immediate</td><td><code>N, Z</code></td><td>And <code>M</code> with <code>A</code>: <code>A AND M -&gt; A</code></td></tr>
+<tr><td></td><td><code>25'h</code></td><td>Zeropage</td><td></td><td></td></tr>
+<tr><td></td><td><code>35'h</code></td><td>Zeropage, X-Indexed</td><td></td><td></td></tr>
+<tr><td></td><td><code>2D'h</code></td><td>Absolute</td><td></td><td></td></tr>
+<tr><td></td><td><code>3D'h</code></td><td>Absolute, X-Indexed</td><td></td><td></td></tr>
+<tr><td></td><td><code>39'h</code></td><td>Absolute, Y-Indexed</td><td></td><td></td></tr>
+<tr><td></td><td><code>21'h</code></td><td>X-Indexed, Indirect</td><td></td><td></td></tr>
+<tr><td></td><td><code>31'h</code></td><td>Indirect, Y-Indexed</td><td></td><td></td></tr>
+<tr><td><strong>ORA</strong></td><td><code>09'h</code></td><td>Immediate</td><td><code>N, Z</code></td><td>Or <code>M</code> with <code>A</code>. <code>A OR M -&gt; A.</code></td></tr>
+<tr><td></td><td><code>05'h</code></td><td>Zeropage</td><td></td><td></td></tr>
+<tr><td></td><td><code>15'h</code></td><td>Zeropage, X-Indexed</td><td></td><td></td></tr>
+<tr><td></td><td><code>0D'h</code></td><td>Absolute</td><td></td><td></td></tr>
+<tr><td></td><td><code>1D'h</code></td><td>Absolute, X-Indexed</td><td></td><td></td></tr>
+<tr><td></td><td><code>19'h</code></td><td>Absolute, Y-Indexed</td><td></td><td></td></tr>
+<tr><td></td><td><code>01'h</code></td><td>X-Indexed, Indirect</td><td></td><td></td></tr>
+<tr><td></td><td><code>11'h</code></td><td>Indirect, Y-Indexed</td><td></td><td></td></tr>
+<tr><td><strong>EOR</strong></td><td><code>49'h</code></td><td>Immediate</td><td><code>N, Z</code></td><td>Exclusive or <code>A</code> with <code>M</code>. <code>(A XOR M) -&gt; A.</code></td></tr>
+<tr><td></td><td><code>45'h</code></td><td>Zeropage</td><td></td><td></td></tr>
+<tr><td></td><td><code>55'h</code></td><td>Zeropage, X-Indexed</td><td></td><td></td></tr>
+<tr><td></td><td><code>4D'h</code></td><td>Absolute</td><td></td><td></td></tr>
+<tr><td></td><td><code>5D'h</code></td><td>Absolute, X-Indexed</td><td></td><td></td></tr>
+<tr><td></td><td><code>59'h</code></td><td>Absolute, Y-Indexed</td><td></td><td></td></tr>
+<tr><td></td><td><code>41'h</code></td><td>X-Indexed, Indirect</td><td></td><td></td></tr>
+<tr><td></td><td><code>51'h</code></td><td>Indirect, Y-Indexed</td><td></td><td></td></tr>
+</tbody></table>
+<h3><a class="header" href="#comparison-operations" id="comparison-operations">Comparison operations</a></h3>
+<table><thead><tr><th>Mnemonic</th><th>Opcode</th><th>Addressing mode</th><th>Modified Flags</th><th>Description</th></tr></thead><tbody>
+<tr><td><strong>CMP</strong></td><td><code>C9'h</code></td><td>Immediate</td><td><code>N, Z, C</code></td><td>Compare <code>M</code> with <code>A</code>. <code>(A-M)</code>. Result is not stored.</td></tr>
+<tr><td></td><td><code>C5'h</code></td><td>Zeropage</td><td></td><td></td></tr>
+<tr><td></td><td><code>D5'h</code></td><td>Zeropage, X-Indexed</td><td></td><td></td></tr>
+<tr><td></td><td><code>CD'h</code></td><td>Absolute</td><td></td><td></td></tr>
+<tr><td></td><td><code>DD'h</code></td><td>Absolute, X-Indexed</td><td></td><td></td></tr>
+<tr><td></td><td><code>D9'h</code></td><td>Absolute, Y-Indexed</td><td></td><td></td></tr>
+<tr><td></td><td><code>C1'h</code></td><td>X-Indexed, Indirect</td><td></td><td></td></tr>
+<tr><td></td><td><code>D1'h</code></td><td>Indirect, Y-Indexed</td><td></td><td></td></tr>
+<tr><td><strong>CPX</strong></td><td><code>E0'h</code></td><td>Immediate</td><td><code>N, Z, C</code></td><td>Compare <code>M</code> and <code>X</code>. <code>(X - M)</code>. The result is not stored.</td></tr>
+<tr><td></td><td><code>E4'h</code></td><td>Zeropage</td><td></td><td></td></tr>
+<tr><td></td><td><code>EC'h</code></td><td>Absolute</td><td></td><td></td></tr>
+<tr><td><strong>CPY</strong></td><td><code>C0'h</code></td><td>Immediate</td><td><code>N, Z, C</code></td><td>Compare <code>M</code> and <code>Y</code>. <code>(Y - M)</code>. The result is not stored.</td></tr>
+<tr><td></td><td><code>C4'h</code></td><td>Zeropage</td><td></td><td></td></tr>
+<tr><td></td><td><code>CC'h</code></td><td>Absolute</td><td></td><td></td></tr>
+<tr><td><strong>NOP</strong></td><td><code>EA'h</code></td><td>Implied</td><td></td><td>NOP.</td></tr>
+</tbody></table>
+<h3><a class="header" href="#bit-manipulation-operations" id="bit-manipulation-operations">Bit manipulation operations</a></h3>
+<table><thead><tr><th>Mnemonic</th><th>Opcode</th><th>Addressing mode</th><th>Modified Flags</th><th>Description</th></tr></thead><tbody>
+<tr><td><strong>BIT</strong></td><td><code>24'h</code></td><td>Zeropage</td><td><code>N, Z, V</code></td><td><code>M7 -&gt; N</code>, <code>M6 -&gt; V</code>, <code>(M AND A == 0) -&gt; Z</code>.</td></tr>
+<tr><td></td><td><code>2C'h</code></td><td>Absolute</td><td></td><td></td></tr>
+<tr><td><strong>CLC</strong></td><td><code>18'h</code></td><td>Implied</td><td></td><td>Clear <code>C</code> flag.</td></tr>
+<tr><td><strong>CLD</strong></td><td><code>D8'h</code></td><td>Implied</td><td></td><td>Clear <code>D</code> flag.</td></tr>
+<tr><td><strong>CLI</strong></td><td><code>58'h</code></td><td>Implied</td><td></td><td>Clear <code>I</code> flag.</td></tr>
+<tr><td><strong>CLV</strong></td><td><code>B8'h</code></td><td>Implied</td><td></td><td>Clear <code>O</code> flag.</td></tr>
+<tr><td><strong>SEC</strong></td><td><code>38'h</code></td><td>Implied</td><td><code>C</code></td><td>Set <code>C</code> flag.</td></tr>
+<tr><td><strong>SED</strong></td><td><code>F8'h</code></td><td>Implied</td><td><code>D</code></td><td>Set <code>D</code> flag.</td></tr>
+<tr><td><strong>SEI</strong></td><td><code>78'h</code></td><td>Implied</td><td><code>I</code></td><td>Set <code>I</code> flag.</td></tr>
+</tbody></table>
+<h2><a class="header" href="#arithmetic-operations" id="arithmetic-operations">Arithmetic Operations</a></h2>
+<h3><a class="header" href="#addsubstract" id="addsubstract">Add/substract</a></h3>
+<table><thead><tr><th>Mnemonic</th><th>Opcode</th><th>Addressing mode</th><th>Modified Flags</th><th>Description</th></tr></thead><tbody>
+<tr><td><strong>ADC</strong></td><td><code>69'h</code></td><td>Immediate</td><td><code>N, Z, C, V</code></td><td>Add with carry: <code>A + M + C -&gt; A, C</code>.</td></tr>
+<tr><td></td><td><code>65'h</code></td><td>Zeropage</td><td></td><td></td></tr>
+<tr><td></td><td><code>75'h</code></td><td>Zeropage, X-Indexed</td><td></td><td></td></tr>
+<tr><td></td><td><code>6D'h</code></td><td>Absolute</td><td></td><td></td></tr>
+<tr><td></td><td><code>7D'h</code></td><td>Absolute, X-Indexed</td><td></td><td></td></tr>
+<tr><td></td><td><code>79'h</code></td><td>Absolute, Y-Indexed</td><td></td><td></td></tr>
+<tr><td></td><td><code>61'h</code></td><td>X-Indexed, Indirect</td><td></td><td></td></tr>
+<tr><td></td><td><code>71'h</code></td><td>Indirect, Y-Indexed</td><td></td><td></td></tr>
+<tr><td><strong>SBC</strong></td><td><code>E9'h</code></td><td>Immediate</td><td><code>N, Z, C, V</code></td><td>Subtract <code>M</code> from <code>A</code> with borrow. <code>(A - M - Cbar) -&gt; A</code>.</td></tr>
+<tr><td></td><td><code>E5'h</code></td><td>Zeropage</td><td></td><td></td></tr>
+<tr><td></td><td><code>F5'h</code></td><td>Zeropage, X-Indexed</td><td></td><td></td></tr>
+<tr><td></td><td><code>ED'h</code></td><td>Absolute</td><td></td><td></td></tr>
+<tr><td></td><td><code>FD'h</code></td><td>Absolute, X-Indexed</td><td></td><td></td></tr>
+<tr><td></td><td><code>F9'h</code></td><td>Absolute, Y-Indexed</td><td></td><td></td></tr>
+<tr><td></td><td><code>E1'h</code></td><td>X-Indexed, Indirect</td><td></td><td></td></tr>
+<tr><td></td><td><code>F1'h</code></td><td>Indirect, Y-Indexed</td><td></td><td></td></tr>
+</tbody></table>
+<h3><a class="header" href="#incrementdecrement" id="incrementdecrement">Increment/Decrement</a></h3>
+<table><thead><tr><th>Mnemonic</th><th>Opcode</th><th>Addressing mode</th><th>Modified Flags</th><th>Description</th></tr></thead><tbody>
+<tr><td><strong>INC</strong></td><td><code>E6'h</code></td><td>Zeropage</td><td><code>N, Z</code></td><td>Increment <code>M</code> by one. <code>(M + 1) -&gt; M</code>.</td></tr>
+<tr><td></td><td><code>F6'h</code></td><td>Zeropage, X-Indexed</td><td></td><td></td></tr>
+<tr><td></td><td><code>EE'h</code></td><td>Absolute</td><td></td><td></td></tr>
+<tr><td></td><td><code>FE'h</code></td><td>Absolute, X-Indexed</td><td></td><td></td></tr>
+<tr><td><strong>INX</strong></td><td><code>E8'h</code></td><td>Implied</td><td><code>N, Z</code></td><td>Increment <code>X</code> by one. <code>(X + 1) -&gt; X</code>.</td></tr>
+<tr><td><strong>INY</strong></td><td><code>C8'h</code></td><td>Implied</td><td><code>N, Z</code></td><td>Increment <code>Y</code> by one. <code>(Y + 1) -&gt; Y</code>.</td></tr>
+<tr><td><strong>DEC</strong></td><td><code>C6'h</code></td><td>Zeropage</td><td><code>N, Z</code></td><td>Decrement <code>M</code> by one. <code>(M - 1) -&gt; M</code>.</td></tr>
+<tr><td></td><td><code>D6'h</code></td><td>Zeropage, X-Indexed</td><td></td><td></td></tr>
+<tr><td></td><td><code>CE'h</code></td><td>Absolute</td><td></td><td></td></tr>
+<tr><td></td><td><code>DE'h</code></td><td>Absolute, X-Indexed</td><td></td><td></td></tr>
+<tr><td><strong>DEX</strong></td><td><code>CA'h</code></td><td>Implied</td><td><code>N, Z</code></td><td>Decrement <code>X</code> by one. <code>(X - 1) -&gt; X</code>.</td></tr>
+<tr><td><strong>DEY</strong></td><td><code>88'h</code></td><td>Implied</td><td><code>N, Z</code></td><td>Decrement <code>Y</code> by one. <code>(Y - 1) -&gt; Y</code>.</td></tr>
+</tbody></table>
+<h2><a class="header" href="#data-shifting-instructions" id="data-shifting-instructions">Data shifting instructions</a></h2>
+<table><thead><tr><th>Mnemonic</th><th>Opcode</th><th>Addressing mode</th><th>Modified Flags</th><th>Description</th></tr></thead><tbody>
+<tr><td><strong>LSR</strong></td><td><code>4A'h</code></td><td>Accumulator</td><td><code>N(0), Z, C</code></td><td>Logical shift right (1 bit).</td></tr>
+<tr><td></td><td><code>46'h</code></td><td>Zeropage</td><td></td><td></td></tr>
+<tr><td></td><td><code>56'h</code></td><td>Zeropage, X-Indexed</td><td></td><td></td></tr>
+<tr><td></td><td><code>4E'h</code></td><td>Absolute</td><td></td><td></td></tr>
+<tr><td></td><td><code>5E'h</code></td><td>Absolute, X-Indexed</td><td></td><td></td></tr>
+<tr><td><strong>ASL</strong></td><td><code>0A'h</code></td><td>Accumulator</td><td><code>N, Z, C</code></td><td>Arithmetic shift left by one bit (<code>M</code> or <code>A</code>).</td></tr>
+<tr><td></td><td><code>06'h</code></td><td>Zeropage</td><td></td><td></td></tr>
+<tr><td></td><td><code>16'h</code></td><td>Zeropage, X-Indexed</td><td></td><td></td></tr>
+<tr><td></td><td><code>0E'h</code></td><td>Absolute</td><td></td><td></td></tr>
+<tr><td></td><td><code>1E'h</code></td><td>Absolute, X-Indexed</td><td></td><td></td></tr>
+<tr><td><strong>ROL</strong></td><td><code>2A'h</code></td><td>Accumulator</td><td><code>N, Z, C</code></td><td>Rotate one bit left (Circular rotation, including <code>C</code> bit).</td></tr>
+<tr><td></td><td><code>26'h</code></td><td>Zeropage</td><td></td><td></td></tr>
+<tr><td></td><td><code>36'h</code></td><td>Zeropage, X-Indexed</td><td></td><td></td></tr>
+<tr><td></td><td><code>2E'h</code></td><td>Absolute</td><td></td><td></td></tr>
+<tr><td></td><td><code>3E'h</code></td><td>Absolute, X-Indexed</td><td></td><td></td></tr>
+<tr><td><strong>ROR</strong></td><td><code>6A'h</code></td><td>Accumulator</td><td><code>N, Z, C</code></td><td>Rotate one bit left (Circular rotation, including <code>C</code> bit).</td></tr>
+<tr><td></td><td><code>66'h</code></td><td>Zeropage</td><td></td><td></td></tr>
+<tr><td></td><td><code>76'h</code></td><td>Zeropage, X-Indexed</td><td></td><td></td></tr>
+<tr><td></td><td><code>6E'h</code></td><td>Absolute</td><td></td><td></td></tr>
+<tr><td></td><td><code>7E'h</code></td><td>Absolute, X-Indexed</td><td></td><td></td></tr>
+</tbody></table>
+<h2><a class="header" href="#program-control-flow-operations" id="program-control-flow-operations">Program control flow operations</a></h2>
+<h3><a class="header" href="#jump-instructions-absolute-address" id="jump-instructions-absolute-address">Jump instructions (Absolute Address)</a></h3>
+<table><thead><tr><th>Mnemonic</th><th>Opcode</th><th>Addressing mode</th><th>Modified Flags</th><th>Description</th></tr></thead><tbody>
+<tr><td><strong>JMP</strong></td><td><code>4C'h</code></td><td>Absolute</td><td></td><td>Jump to the <code>M</code> location.</td></tr>
+<tr><td></td><td><code>6C'h</code></td><td>Indirect</td><td></td><td></td></tr>
+</tbody></table>
+<h3><a class="header" href="#branch-instructions-relative-to-pc" id="branch-instructions-relative-to-pc">Branch instructions (Relative to PC)</a></h3>
+<table><thead><tr><th>Mnemonic</th><th>Opcode</th><th>Addressing mode</th><th>Modified Flags</th><th>Description</th></tr></thead><tbody>
+<tr><td><strong>BCS</strong></td><td><code>B0'h</code></td><td>Relative</td><td></td><td>Branch if <code>C</code> is set.</td></tr>
+<tr><td><strong>BCC</strong></td><td><code>90'h</code></td><td>Relative</td><td></td><td>Branch if <code>C</code> is clear.</td></tr>
+<tr><td><strong>BEQ</strong></td><td><code>F0'h</code></td><td>Relative</td><td></td><td>Branch if <code>Z</code> is set.</td></tr>
+<tr><td><strong>BNE</strong></td><td><code>D0'h</code></td><td>Relative</td><td></td><td>Branch if <code>Z</code> is clear</td></tr>
+<tr><td><strong>BMI</strong></td><td><code>30'h</code></td><td>Relative</td><td></td><td>Branch if <code>N</code> is set</td></tr>
+<tr><td><strong>BPL</strong></td><td><code>10'h</code></td><td>Relative</td><td></td><td>Branch if <code>N</code> is clear</td></tr>
+<tr><td><strong>BVS</strong></td><td><code>70'h</code></td><td>Relative</td><td></td><td>Branch if <code>V</code> is set</td></tr>
+<tr><td><strong>BVC</strong></td><td><code>50'h</code></td><td>Relative</td><td></td><td>Branch if <code>V</code> is clear</td></tr>
+</tbody></table>
+<h3><a class="header" href="#subroutines" id="subroutines">Subroutines</a></h3>
+<table><thead><tr><th>Mnemonic</th><th>Opcode</th><th>Addressing mode</th><th>Modified Flags</th><th>Description</th></tr></thead><tbody>
+<tr><td><strong>JSR</strong></td><td><code>20'h</code></td><td>Absolute</td><td></td><td>Jump to subrutine (Saves return address in the stack)</td></tr>
+<tr><td><strong>RTS</strong></td><td><code>60'h</code></td><td>Implied</td><td></td><td>Returns from subroutine. Pulls <code>PC</code> from <code>SP</code></td></tr>
+</tbody></table>
+<h3><a class="header" href="#interrupts" id="interrupts">Interrupts</a></h3>
+<table><thead><tr><th>Mnemonic</th><th>Opcode</th><th>Addressing mode</th><th>Modified Flags</th><th>Description</th></tr></thead><tbody>
+<tr><td><strong>BRK</strong></td><td><code>00'h</code></td><td>Implied</td><td>I</td><td>Triggers a software interrupt. Pushes the <code>PC+2</code> and <code>SP</code> to the stack</td></tr>
+<tr><td><strong>RTI</strong></td><td><code>40'h</code></td><td>Implied</td><td>From <code>SP</code></td><td>Returns from the current ISR. Pulls <code>P</code> and <code>PC</code></td></tr>
+</tbody></table>
+<h2><a class="header" href="#memory-transfer-operations" id="memory-transfer-operations">Memory transfer operations</a></h2>
+<h3><a class="header" href="#loadstore-fromto-memory" id="loadstore-fromto-memory">Load/Store from/to memory</a></h3>
+<table><thead><tr><th>Mnemonic</th><th>Opcode</th><th>Addressing mode</th><th>Modified Flags</th><th>Description</th></tr></thead><tbody>
+<tr><td><strong>LDA</strong></td><td><code>A9'h</code></td><td>Immediate</td><td><code>N, Z</code></td><td>Loads the <code>A</code> with <code>M</code>.</td></tr>
+<tr><td></td><td><code>A5'h</code></td><td>Zeropage</td><td></td><td></td></tr>
+<tr><td></td><td><code>B5'h</code></td><td>Zeropage, X-Indexed</td><td></td><td></td></tr>
+<tr><td></td><td><code>AD'h</code></td><td>Absolute</td><td></td><td></td></tr>
+<tr><td></td><td><code>BD'h</code></td><td>Absolute, X-Indexed</td><td></td><td></td></tr>
+<tr><td></td><td><code>B9'h</code></td><td>Absolute, Y-Indexed</td><td></td><td></td></tr>
+<tr><td></td><td><code>A1'h</code></td><td>X-Indexed, Indirect</td><td></td><td></td></tr>
+<tr><td></td><td><code>B1'h</code></td><td>Indirect, Y-Indexed</td><td></td><td></td></tr>
+<tr><td><strong>STA</strong></td><td><code>85'h</code></td><td>Zeropage</td><td></td><td>Stores the <code>A</code> in <code>M</code>.</td></tr>
+<tr><td></td><td><code>95'h</code></td><td>Zeropage, X-Indexed</td><td></td><td></td></tr>
+<tr><td></td><td><code>8D'h</code></td><td>Absolute</td><td></td><td></td></tr>
+<tr><td></td><td><code>9D'h</code></td><td>Absolute, X-Indexed</td><td></td><td></td></tr>
+<tr><td></td><td><code>99'h</code></td><td>Absolute, Y-Indexed</td><td></td><td></td></tr>
+<tr><td></td><td><code>81'h</code></td><td>X-Indexed, Indirect</td><td></td><td></td></tr>
+<tr><td></td><td><code>91'h</code></td><td>Indirect, Y-Indexed</td><td></td><td></td></tr>
+<tr><td><strong>LDX</strong></td><td><code>A2'h</code></td><td>Immediate</td><td><code>N, Z</code></td><td>Loads the <code>X</code> register with <code>M</code>.</td></tr>
+<tr><td></td><td><code>A6'h</code></td><td>Zeropage</td><td></td><td></td></tr>
+<tr><td></td><td><code>B6'h</code></td><td>Zeropage, Y-Indexed</td><td></td><td></td></tr>
+<tr><td></td><td><code>AE'h</code></td><td>Absolute</td><td></td><td></td></tr>
+<tr><td></td><td><code>BE'h</code></td><td>Absolute, Y-Indexed</td><td></td><td></td></tr>
+<tr><td><strong>STX</strong></td><td><code>86'h</code></td><td>Zeropage</td><td></td><td>Stores the <code>X</code> register in <code>M</code>.</td></tr>
+<tr><td></td><td><code>96'h</code></td><td>Zeropage, Y-Indexed</td><td></td><td></td></tr>
+<tr><td></td><td><code>8E'h</code></td><td>Absolute</td><td></td><td></td></tr>
+<tr><td><strong>LDY</strong></td><td><code>A0'h</code></td><td>Immediate</td><td><code>N, Z</code></td><td>Loads the <code>Y</code> register with <code>M</code>.</td></tr>
+<tr><td></td><td><code>A4'h</code></td><td>Zeropage</td><td></td><td></td></tr>
+<tr><td></td><td><code>B4'h</code></td><td>Zeropage, X-Indexed</td><td></td><td></td></tr>
+<tr><td></td><td><code>AC'h</code></td><td>Absolute</td><td></td><td></td></tr>
+<tr><td></td><td><code>BC'h</code></td><td>Absolute, X-Indexed</td><td></td><td></td></tr>
+<tr><td><strong>STY</strong></td><td><code>84'h</code></td><td>Zeropage</td><td></td><td>Stores the <code>Y</code> register in <code>M</code>.</td></tr>
+<tr><td></td><td><code>94'h</code></td><td>Zeropage, X-Indexed</td><td></td><td></td></tr>
+<tr><td></td><td><code>8C'h</code></td><td>Absolute</td><td></td><td></td></tr>
+</tbody></table>
+<h3><a class="header" href="#register-data-transfer-operations" id="register-data-transfer-operations">Register data transfer operations</a></h3>
+<table><thead><tr><th>Mnemonic</th><th>Opcode</th><th>Addressing mode</th><th>Modified Flags</th><th>Description</th></tr></thead><tbody>
+<tr><td><strong>TAX</strong></td><td><code>AA'h</code></td><td>Implied</td><td></td><td>Transfer <code>A</code> to <code>X</code>. <code>A -&gt; X</code>.</td></tr>
+<tr><td><strong>TXA</strong></td><td><code>8A'h</code></td><td>Implied</td><td></td><td>Transfer <code>X</code> to <code>A</code>. <code>X -&gt; A</code>.</td></tr>
+<tr><td><strong>TAY</strong></td><td><code>A8'h</code></td><td>Implied</td><td></td><td>Transfer <code>A</code> to <code>Y</code>. <code>A -&gt; Y</code>.</td></tr>
+<tr><td><strong>TYA</strong></td><td><code>98'h</code></td><td>Implied</td><td></td><td>Transfer <code>Y</code> to <code>A</code>. <code>Y -&gt; A</code>.</td></tr>
+<tr><td><strong>TSX</strong></td><td><code>BA'h</code></td><td>Implied</td><td></td><td>Transfer <code>SP</code> to <code>X</code>. <code>SP -&gt; X</code>.</td></tr>
+<tr><td><strong>TXS</strong></td><td><code>9A'h</code></td><td>Implied</td><td></td><td>Transfer <code>X</code> to <code>SP</code>. <code>X -&gt; SP</code>.</td></tr>
+</tbody></table>
+<h3><a class="header" href="#stack-operations" id="stack-operations">Stack operations</a></h3>
+<table><thead><tr><th>Mnemonic</th><th>Opcode</th><th>Addressing mode</th><th>Modified Flags</th><th>Description</th></tr></thead><tbody>
+<tr><td><strong>PHA</strong></td><td><code>48'h</code></td><td>Implied</td><td></td><td>Push <code>A</code> to the stack.</td></tr>
+<tr><td><strong>PLA</strong></td><td><code>68'h</code></td><td>Implied</td><td></td><td>Pull <code>A</code> from the stack.</td></tr>
+<tr><td><strong>PHP</strong></td><td><code>08'h</code></td><td>Implied</td><td></td><td>Push <code>P</code> to the stack.</td></tr>
+<tr><td><strong>PLP</strong></td><td><code>28'h</code></td><td>Implied</td><td></td><td>Pull <code>P</code> from the stack.</td></tr>
+</tbody></table>
+<h1><a class="header" href="#addressing-modes" id="addressing-modes">Addressing modes</a></h1>
+<p>Available addressing modes are listed below.</p>
+<ul>
+<li><strong>Accumulator</strong>. The operand is the Accumulator.</li>
+<li><strong>Absolute</strong>. The operand is located at a given absolute address (16-bit addressing-space).</li>
+<li><strong>Absolute, X-Indexed</strong>. The operand is located at the absolute address + the X index value.</li>
+<li><strong>Absolute, Y-Indexed</strong>. The operand is located at the absolute address + the Y index value.</li>
+<li><strong>Immediate</strong>. The operand is encoded with the instruction.</li>
+<li><strong>Implied</strong>. The operand is implicit in the context of the instruction (not provided by the user).</li>
+<li><strong>Indirect</strong>. The address field in the instruction contains the memory location where the effective address of the operand is present.</li>
+<li><strong>X-indexed, indirect</strong>. The value at the address field in the instruction plus the X register points to the memory location where the effective address of the operand is present.</li>
+<li><strong>Indirect, Y-indexed</strong>. The operand is the same as in an indirect access, except the obtained value is added with the Y register.</li>
+<li><strong>Relative</strong>. The operand is the PC + a signed offset (used for branching).</li>
+<li><strong>Zeropage</strong>. The operand is a zeropage address (single byte).</li>
+<li><strong>Zeropage X-indexed</strong>. The operand is a zeropage address incremented by X.</li>
+<li><strong>Zeropage Y-indexed</strong>. The operand is a zeropage address incremented by Y.</li>
+</ul>
+<h1><a class="header" href="#microarchitecture" id="microarchitecture">Microarchitecture</a></h1>
+<h1><a class="header" href="#processor-status" id="processor-status">Processor Status</a></h1>
+<h1><a class="header" href="#emulator-architecture" id="emulator-architecture">Emulator architecture</a></h1>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                        
+
+                        
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                
+
+                
+            </nav>
+
+        </div>
+
+        
+
+        
+
+        
+
+        
+        <script type="text/javascript">
+            window.playground_copyable = true;
+        </script>
+        
+
+        
+
+        
+        <script src="elasticlunr.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="mark.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="searcher.js" type="text/javascript" charset="utf-8"></script>
+        
+
+        <script src="clipboard.min.js" type="text/javascript" charset="utf-8"></script>
+        <script src="highlight.js" type="text/javascript" charset="utf-8"></script>
+        <script src="book.js" type="text/javascript" charset="utf-8"></script>
+
+        <!-- Custom JS scripts -->
+        
+
+        
+        
+        <script type="text/javascript">
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+        
+        
+
+    </body>
+</html>
