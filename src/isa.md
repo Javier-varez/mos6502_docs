@@ -24,7 +24,7 @@ Let's start with the legal instructions for now. The following table summarizes 
 |          | 39'h          | Absolute, Y-Indexed   |                |                                                                                 |
 |          | 21'h          | X-Indexed, Indirect   |                |                                                                                 |
 |          | 31'h          | Indirect, Y-Indexed   |                |                                                                                 |
-| ASL      | 0A'h          | Accumulator           | N, Z, C        | Shift left one bit (Memory or accumulator)                                      |
+| ASL      | 0A'h          | Accumulator           | N, Z, C        | Arithmetic shift left by one bit (Memory or accumulator)                        |
 |          | 06'h          | Zeropage              |                |                                                                                 |
 |          | 16'h          | Zeropage, X-Indexed   |                |                                                                                 |
 |          | 0E'h          | Absolute              |                |                                                                                 |
@@ -42,8 +42,8 @@ Let's start with the legal instructions for now. The following table summarizes 
 | BVS      | 70'h          | Relative              |                | Branch if V is set                                                              |
 | CLC      | 18'h          | Implied               |                | Clear Carry Flag                                                                |
 | CLD      | D8'h          | Implied               |                | Clear Decimal mode                                                              |
-| CLI      | D8'h          | Implied               |                | Clear Interrupt disable bit                                                     |
-| CLV      | 58'h          | Implied               |                | Clear overflow flag                                                             |
+| CLI      | 58'h          | Implied               |                | Clear Interrupt disable bit                                                     |
+| CLV      | B8'h          | Implied               |                | Clear overflow flag                                                             |
 | CMP      | C9'h          | Immediate             | N, Z, C        | Compare memory with accumulator (A-M). Result is not stored.                    |
 |          | C5'h          | Zeropage              |                |                                                                                 |
 |          | D5'h          | Zeropage, X-Indexed   |                |                                                                                 |
@@ -89,11 +89,73 @@ Let's start with the legal instructions for now. The following table summarizes 
 |          | B9'h          | Absolute, Y-Indexed   |                |                                                                                 |
 |          | A1'h          | X-Indexed, Indirect   |                |                                                                                 |
 |          | B1'h          | Indirect, Y-Indexed   |                |                                                                                 |
-| ORA      | 01'h          | X-Indexed, Indirect   | N,Z            | Or memory with Accumulator. A OR M -> A.                                        |
+| LDX      | A2'h          | Immediate             | N, Z           | Loads the X register with memory.                                               |
+|          | A6'h          | Zeropage              |                |                                                                                 |
+|          | B6'h          | Zeropage, Y-Indexed   |                |                                                                                 |
+|          | AE'h          | Absolute              |                |                                                                                 |
+|          | BE'h          | Absolute, Y-Indexed   |                |                                                                                 |
+| LDY      | A0'h          | Immediate             | N, Z           | Loads the Y register with memory.                                               |
+|          | A4'h          | Zeropage              |                |                                                                                 |
+|          | B4'h          | Zeropage, X-Indexed   |                |                                                                                 |
+|          | AC'h          | Absolute              |                |                                                                                 |
+|          | BC'h          | Absolute, X-Indexed   |                |                                                                                 |
+| LSR      | 4A'h          | Accumulator           | N(0), Z, C     | Logical shift right (1 bit).                                                    |
+|          | 46'h          | Zeropage              |                |                                                                                 |
+|          | 56'h          | Zeropage, X-Indexed   |                |                                                                                 |
+|          | 4E'h          | Absolute              |                |                                                                                 |
+|          | 5E'h          | Absolute, X-Indexed   |                |                                                                                 |
+| NOP      | EA'h          | Implied               |                | NOP                                                                             |
+| ORA      | 09'h          | Immediate             | N, Z           | Or memory with Accumulator. A OR M -> A.                                        |
 |          | 05'h          | Zeropage              |                |                                                                                 |
-|          | 09'h          | Immediate             |                |                                                                                 |
-|          | 0D'h          | Absolute              |                |                                                                                 |
-|          | 11'h          | Indirect, Y-Indexed   |                |                                                                                 |
 |          | 15'h          | Zeropage, X-Indexed   |                |                                                                                 |
-|          | 19'h          | Absolute, Y-Indexed   |                |                                                                                 |
+|          | 0D'h          | Absolute              |                |                                                                                 |
 |          | 1D'h          | Absolute, X-Indexed   |                |                                                                                 |
+|          | 19'h          | Absolute, Y-Indexed   |                |                                                                                 |
+|          | 01'h          | X-Indexed, Indirect   |                |                                                                                 |
+|          | 11'h          | Indirect, Y-Indexed   |                |                                                                                 |
+| PHA      | 48'h          | Implied               |                | Push accumulator to the stack.                                                  |
+| PHP      | 08'h          | Implied               |                | Push processor status to the stack.                                             |
+| PLA      | 68'h          | Implied               |                | Pull accumulator from the stack.                                                |
+| PLP      | 28'h          | Implied               |                | Pull processor status from the stack.                                           |
+| ROL      | 2A'h          | Accumulator           | N, Z, C        | Rotate one bit left (Circular rotation, including Carry bit)                    |
+|          | 26'h          | Zeropage              |                |                                                                                 |
+|          | 36'h          | Zeropage, X-Indexed   |                |                                                                                 |
+|          | 2E'h          | Absolute              |                |                                                                                 |
+|          | 3E'h          | Absolute, X-Indexed   |                |                                                                                 |
+| ROR      | 6A'h          | Accumulator           | N, Z, C        | Rotate one bit left (Circular rotation, including Carry bit)                    |
+|          | 66'h          | Zeropage              |                |                                                                                 |
+|          | 76'h          | Zeropage, X-Indexed   |                |                                                                                 |
+|          | 6E'h          | Absolute              |                |                                                                                 |
+|          | 7E'h          | Absolute, X-Indexed   |                |                                                                                 |
+| RTI      | 40'h          | Implied               | From stack     | Returns from the current ISR. Pulls processor status and program counter        |
+| RTS      | 60'h          | Implied               |                | Returns from subroutine. Pulls program counter from stack                       |
+| SBC      | E9'h          | Immediate             | N, Z, C, V     | Subtract mem from accumulator with borrow (A - M - Cbar) -> A                   |
+|          | E5'h          | Zeropage              |                |                                                                                 |
+|          | F5'h          | Zeropage, X-Indexed   |                |                                                                                 |
+|          | ED'h          | Absolute              |                |                                                                                 |
+|          | FD'h          | Absolute, X-Indexed   |                |                                                                                 |
+|          | F9'h          | Absolute, Y-Indexed   |                |                                                                                 |
+|          | E1'h          | X-Indexed, Indirect   |                |                                                                                 |
+|          | F1'h          | Indirect, Y-Indexed   |                |                                                                                 |
+| SEC      | 38'h          | Implied               | C              | Set carry flag                                                                  |
+| SED      | F8'h          | Implied               | D              | Set decimal mode                                                                |
+| SEI      | 78'h          | Implied               | I              | Set Interrupt disable bit                                                       |
+| STA      | 85'h          | Zeropage              |                | Stores the accumulator in memory.                                               |
+|          | 95'h          | Zeropage, X-Indexed   |                |                                                                                 |
+|          | 8D'h          | Absolute              |                |                                                                                 |
+|          | 9D'h          | Absolute, X-Indexed   |                |                                                                                 |
+|          | 99'h          | Absolute, Y-Indexed   |                |                                                                                 |
+|          | 81'h          | X-Indexed, Indirect   |                |                                                                                 |
+|          | 91'h          | Indirect, Y-Indexed   |                |                                                                                 |
+| STX      | 86'h          | Zeropage              |                | Stores the X register in memory.                                                |
+|          | 96'h          | Zeropage, Y-Indexed   |                |                                                                                 |
+|          | 8E'h          | Absolute              |                |                                                                                 |
+| STY      | 84'h          | Zeropage              |                | Stores the Y register in memory.                                                |
+|          | 94'h          | Zeropage, X-Indexed   |                |                                                                                 |
+|          | 8C'h          | Absolute              |                |                                                                                 |
+| TAX      | AA'h          | Implied               |                | Transfer accumulator to X-Index. A -> X                                         |
+| TAY      | A8'h          | Implied               |                | Transfer accumulator to Y-Index. A -> Y                                         |
+| TSX      | BA'h          | Implied               |                | Transfer Stack pointer to X-Index. SP -> X                                      |
+| TXA      | 8A'h          | Implied               |                | Transfer X-Index to accumulator. X -> A                                         |
+| TXS      | 9A'h          | Implied               |                | Transfer X-Index to Stack pointer. X -> SP                                      |
+| TYA      | 98'h          | Implied               |                | Transfer Y-Index to accumulator. Y -> A                                         |
